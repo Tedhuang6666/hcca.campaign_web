@@ -243,6 +243,22 @@ a{color:inherit;text-decoration:none}
 .card-body li{margin-bottom:3px;line-height:1.7}
 .card-body p{margin:0}
 
+/* ── CARD ICON COLOR CLASSES ── */
+.ci-gold  { background:rgba(201,168,76,.12);  color:var(--gold); }
+.ci-blue  { background:rgba(79,134,198,.12);  color:var(--c1); }
+.ci-orange{ background:rgba(224,123,84,.12);  color:var(--c2); }
+.ci-pink  { background:rgba(192,96,112,.12);  color:var(--c3); }
+.ci-purple{ background:rgba(139,92,246,.12);  color:var(--c4); }
+.ci-teal  { background:rgba(46,158,122,.12);  color:var(--c5); }
+.ci-amber { background:rgba(232,168,56,.12);  color:var(--c6); }
+.ci-lblue { background:rgba(90,143,212,.12);  color:var(--c7); }
+/* event card icons (no bg, color only) */
+.ci-c3{ color:var(--c3); }
+.ci-c4{ color:var(--c4); }
+.ci-c5{ color:var(--c5); }
+.ci-c6{ color:var(--c6); }
+.ci-c7{ color:var(--c7); }
+
 /* ── EVENT CARDS ── */
 .event-card{padding-top:22px}
 .event-top{
