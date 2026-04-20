@@ -305,6 +305,24 @@ document.getElementById('btnList').onclick=()=>{
 document.getElementById('prevM').onclick=()=>{curM--;if(curM<0){curM=11;curY--;}render();};
 document.getElementById('nextM').onclick=()=>{curM++;if(curM>11){curM=0;curY++;}render();};
 
+/* ── SWIPE TO CHANGE MONTH ── */
+(()=>{
+  const wrap=document.querySelector('.cal-wrap');
+  let tx=0, ty=0;
+  wrap.addEventListener('touchstart',e=>{
+    tx=e.changedTouches[0].clientX;
+    ty=e.changedTouches[0].clientY;
+  },{passive:true});
+  wrap.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx;
+    const dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)<40||Math.abs(dx)<Math.abs(dy)*1.2) return;
+    if(dx<0){curM++;if(curM>11){curM=0;curY++;}}
+    else{curM--;if(curM<0){curM=11;curY--;}}
+    render();
+  },{passive:true});
+})();
+
 /* ── SMOOTH SCROLL (nav + hero buttons) ── */
 function goTo(id){
   const el=document.getElementById(id);
@@ -360,6 +378,27 @@ const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
 },{threshold:0.07});
 document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+/* ── COUNT-UP ANIMATION ── */
+const countUpObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting || entry.target.classList.contains('counted')) return;
+    entry.target.classList.add('counted');
+    const target = parseInt(entry.target.dataset.target, 10);
+    const duration = 900;
+    let startTs = null;
+    const step = ts => {
+      if (!startTs) startTs = ts;
+      const progress = Math.min((ts - startTs) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      entry.target.textContent = Math.round(ease * target);
+      if (progress < 1) requestAnimationFrame(step);
+      else entry.target.textContent = target;
+    };
+    requestAnimationFrame(step);
+  });
+}, { threshold: 0.6 });
+document.querySelectorAll('.stat-num[data-target]').forEach(el => countUpObs.observe(el));
 
 /* ── INIT ── */
 render();
