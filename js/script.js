@@ -18,11 +18,11 @@ const EVENTS = [
     id:'commerce', name:'校商計畫', color:'#e07b54', category:'校商',
     desc:'由學生投稿商品並經投票選出年度代表性周邊，打造竹中限定商品文化。',
     ranges:[
-      {sy:2026,sm:9,sd:30,ey:2026,em:10,ed:20, label:'預購期間'},
+      {sy:2026,sm:9,sd:30,ey:2026,em:10,ed:20, label:'商品預購'},
       {sy:2026,sm:11,sd:5,ey:2026,em:11,ed:5,  label:'商品發放'},
     ],
     timeline:[
-      {date:'10/30 ～ 11/20',label:'預購期間'},
+      {date:'10/30 ～ 11/20',label:'商品預購'},
       {date:'12/5',label:'商品發放'},
     ]
   },
@@ -30,11 +30,11 @@ const EVENTS = [
     id:'christmas', name:'聯合聖誕傳情', color:'#c06070', category:'跨校',
     desc:'提供學生跨校傳遞卡片與禮物的溫馨平台，感受節日氛圍與跨校情誼。',
     ranges:[
-      {sy:2026,sm:10,sd:3,ey:2026,em:10,ed:24, label:'預購'},
+      {sy:2026,sm:10,sd:3,ey:2026,em:10,ed:24, label:'卡片預購'},
       {sy:2026,sm:11,sd:1,ey:2026,em:11,ed:15, label:'領取與投遞'},
     ],
     timeline:[
-      {date:'11/3 ～ 11/24',label:'預購'},
+      {date:'11/3 ～ 11/24',label:'卡片預購'},
       {date:'12/1 ～ 12/15',label:'領取與投遞'},
     ]
   },
@@ -42,12 +42,12 @@ const EVENTS = [
     id:'dance', name:'聯合舞會', color:'#8b5cf6', category:'跨校',
     desc:'與友校共同舉辦大型交流盛典，共舞共樂，共創美好夜晚。',
     ranges:[
-      {sy:2026,sm:10,sd:4, ey:2026,em:10,ed:17, label:'預購'},
+      {sy:2026,sm:10,sd:4, ey:2026,em:10,ed:17, label:'門票預購'},
       {sy:2026,sm:11,sd:15,ey:2026,em:11,ed:15, label:'發放門票'},
       {sy:2026,sm:11,sd:19,ey:2026,em:11,ed:19, label:'活動舉行'},
     ],
     timeline:[
-      {date:'11/4 ～ 11/17',label:'預購'},
+      {date:'11/4 ～ 11/17',label:'門票預購'},
       {date:'12/15',label:'發放門票'},
       {date:'12/19',label:'活動舉行'},
     ]
