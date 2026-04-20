@@ -153,6 +153,7 @@
       <span class="sec-num">SCHEDULE</span><div class="sec-line"></div>
       <h2 class="sec-title">年度活動行事曆</h2>
     </div>
+    <p class="cal-disclaimer fade-up">預計施行時間，執政時可能依校方及其他規畫調整</p>
     <div class="cal-toolbar fade-up">
       <div class="cal-month-label" id="calLabel"></div>
       <div class="cal-controls">
@@ -165,14 +166,22 @@
       </div>
     </div>
     <div class="cal-wrap fade-up">
-      <div id="calGrid">
-        <div class="cal-weekdays">
-          <div>日</div><div>一</div><div>二</div><div>三</div>
-          <div>四</div><div>五</div><div>六</div>
+      <div class="cal-slide" id="calSlide">
+        <div id="calGrid">
+          <div class="cal-weekdays">
+            <div>日</div><div>一</div><div>二</div><div>三</div>
+            <div>四</div><div>五</div><div>六</div>
+          </div>
+          <div class="cal-body" id="calBody"></div>
         </div>
-        <div class="cal-body" id="calBody"></div>
+        <div id="calList"></div>
       </div>
-      <div id="calList"></div>
+      <div class="swipe-hint swipe-hint-left" id="swipeHintL">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+      </div>
+      <div class="swipe-hint swipe-hint-right" id="swipeHintR">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+      </div>
       <div class="cal-legend" id="calLegend"></div>
     </div>
   </div>

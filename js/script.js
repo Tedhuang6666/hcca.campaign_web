@@ -90,6 +90,72 @@ const EVENTS = [
 
 /* ── STATE ── */
 let curY=2026, curM=7, mode='grid';
+const MIN_Y=2026,MIN_M=7,MAX_Y=2027,MAX_M=5;
+function isAtMin(){return curY===MIN_Y&&curM===MIN_M;}
+function isAtMax(){return curY===MAX_Y&&curM===MAX_M;}
+function updateNavBtns() {
+  // 在循環模式下，按鈕永遠可以點擊，所以直接設為 false
+  const prevBtn = document.getElementById('prevM');
+  const nextBtn = document.getElementById('nextM');
+  if (prevBtn) prevBtn.disabled = false;
+  if (nextBtn) nextBtn.disabled = false;
+}
+
+function changeMonth(dir) {
+  // 必須先定義 slide，否則後續 if(slide) 會出錯
+  const slide = document.getElementById('calSlide');
+
+  const performLogic = () => {
+    curM += dir;
+
+    // 處理標準月份進退位
+    if (curM > 11) {
+      curM = 0;
+      curY++;
+    } else if (curM < 0) {
+      curM = 11;
+      curY--;
+    }
+
+    // --- 核心：循環判斷邏輯 ---
+    // 超過最大限制 (2027/5) 則跳回最小 (2026/7)
+    if (curY > MAX_Y || (curY === MAX_Y && curM > MAX_M)) {
+      curY = MIN_Y;
+      curM = MIN_M;
+    } 
+    // 低於最小限制 (2026/7) 則跳至最大 (2027/5)
+    else if (curY < MIN_Y || (curY === MIN_Y && curM < MIN_M)) {
+      curY = MAX_Y;
+      curM = MAX_M;
+    }
+
+    render();
+    // 記得執行按鈕狀態更新（雖然循環模式下按鈕不應被禁用）
+    updateNavBtns();
+  };
+
+  if (slide) {
+    const outX = dir > 0 ? '-30px' : '30px';
+    const inX = dir > 0 ? '30px' : '-30px';
+    
+    // 出場動畫
+    slide.style.cssText = `transition:transform .2s ease,opacity .2s ease;transform:translateX(${outX});opacity:0`;
+    
+    setTimeout(() => {
+      performLogic(); 
+      
+      // 準備進場位置
+      slide.style.cssText = `transition:none;transform:translateX(${inX});opacity:0`;
+      
+      // 進場動畫
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        slide.style.cssText = 'transition:transform .2s ease,opacity .2s ease;transform:translateX(0);opacity:1';
+      }));
+    }, 185);
+  } else {
+    performLogic();
+  }
+}
 const MN=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
 const MS=86400000;
 
@@ -194,7 +260,7 @@ function renderGrid(){
         bar.style.gridColumn=`${item.sc+1}/${item.ec+2}`;
         bar.style.gridRow=`${item.ln+1}`;
         // Show label at start of each range
-        bar.textContent=item.isSt?item.label:'';
+        bar.textContent=item.isSt?`${item.ev.name}－${item.label}`:``;
         bar.title=`${item.ev.name}：${item.label}`;
         bar.addEventListener('click',()=>openModal(item.ev));
         eg.appendChild(bar);
@@ -235,8 +301,8 @@ function renderAgenda(){
     item.innerHTML=`<div class="ag-dot" style="background:${ev.color}"></div>
       <div>
         <div class="ag-date">${ds}</div>
-        <div class="ag-name">${label}</div>
-        <div class="ag-phase">${ev.name}</div>
+        <div class="ag-name">${ev.name}</div>
+        <div class="ag-phase">${label}</div>
       </div>`;
     item.addEventListener('click',()=>openModal(ev));
     wrap.appendChild(item);
@@ -302,24 +368,42 @@ document.getElementById('btnList').onclick=()=>{
 };
 
 /* ── MONTH NAV ── */
-document.getElementById('prevM').onclick=()=>{curM--;if(curM<0){curM=11;curY--;}render();};
-document.getElementById('nextM').onclick=()=>{curM++;if(curM>11){curM=0;curY++;}render();};
+document.getElementById('prevM').onclick=()=>changeMonth(-1);
+document.getElementById('nextM').onclick=()=>changeMonth(1);
 
 /* ── SWIPE TO CHANGE MONTH ── */
 (()=>{
   const wrap=document.querySelector('.cal-wrap');
-  let tx=0, ty=0;
+  const hintL=document.getElementById('swipeHintL');
+  const hintR=document.getElementById('swipeHintR');
+  let tx=0, ty=0, swiping=false;
   wrap.addEventListener('touchstart',e=>{
     tx=e.changedTouches[0].clientX;
     ty=e.changedTouches[0].clientY;
+    swiping=false;
+  },{passive:true});
+  wrap.addEventListener('touchmove',e=>{
+    const dx=e.changedTouches[0].clientX-tx;
+    const dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)<10) return;
+    if(Math.abs(dx)<Math.abs(dy)*1.2) return;
+    swiping=true;
+    if(dx<0){
+      hintL&&hintL.classList.remove('visible');
+      hintR&&hintR.classList.add('visible');
+    } else {
+      hintR&&hintR.classList.remove('visible');
+      hintL&&hintL.classList.add('visible');
+    }
   },{passive:true});
   wrap.addEventListener('touchend',e=>{
+    hintL&&hintL.classList.remove('visible');
+    hintR&&hintR.classList.remove('visible');
+    if(!swiping) return;
     const dx=e.changedTouches[0].clientX-tx;
     const dy=e.changedTouches[0].clientY-ty;
     if(Math.abs(dx)<40||Math.abs(dx)<Math.abs(dy)*1.2) return;
-    if(dx<0){curM++;if(curM>11){curM=0;curY++;}}
-    else{curM--;if(curM<0){curM=11;curY--;}}
-    render();
+    changeMonth(dx<0?1:-1);
   },{passive:true});
 })();
 
@@ -403,3 +487,4 @@ document.querySelectorAll('.stat-num[data-target]').forEach(el => countUpObs.obs
 /* ── INIT ── */
 render();
 renderLegend();
+updateNavBtns();

@@ -126,7 +126,7 @@ a{color:inherit;text-decoration:none}
 [data-theme="dark"] .vbtn.active{background:var(--gold);color:#000}
 
 .cal-wrap{background:var(--surface);border:1px solid var(--border);
-  border-radius:16px;overflow:hidden;box-shadow:0 4px 24px var(--shadow)}
+  border-radius:16px;overflow:hidden;box-shadow:0 4px 24px var(--shadow);position:relative}
 .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);
   text-align:center;font-size:10px;letter-spacing:1px;color:var(--muted);
   padding:14px 8px 8px;border-bottom:1px solid var(--border)}
@@ -181,6 +181,34 @@ a{color:inherit;text-decoration:none}
 .ag-name{font-size:13px;font-weight:500}
 .ag-phase{font-size:10.5px;color:var(--muted)}
 .ag-cat{font-size:10px;color:var(--muted);opacity:.7}
+
+/* ── CALENDAR DISCLAIMER ── */
+.cal-disclaimer{
+  font-size:11px;color:var(--muted);margin-bottom:14px;
+  padding:5px 12px;background:rgba(201,168,76,.07);
+  border-left:2px solid var(--gold);border-radius:0 6px 6px 0;
+  letter-spacing:.15px;
+}
+
+/* ── CAL SLIDE (month transition) ── */
+.cal-slide{will-change:transform,opacity}
+
+/* ── SWIPE HINTS ── */
+.swipe-hint{
+  position:absolute;top:42%;transform:translateY(-50%);
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(201,168,76,.18);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .18s ease;z-index:10;
+}
+.swipe-hint-left{left:10px}
+.swipe-hint-right{right:10px}
+.swipe-hint.visible{opacity:1}
+
+/* ── DISABLED NAV BTN ── */
+.cal-btn:disabled{opacity:.28;cursor:not-allowed}
+.cal-btn:disabled:hover{background:none;color:var(--ink);border-color:var(--border)}
 
 /* ── MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(10,10,30,.5);
@@ -409,4 +437,40 @@ footer .footer-sub{color:rgba(255,255,255,.35);font-size:11px;margin-top:12px}
 @media(min-width:1024px){
   .cards-grid{grid-template-columns:repeat(3,1fr)}
   .cards-2col{grid-template-columns:repeat(2,1fr)!important}
+  .team-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ── IG FLOAT BOUNCE ── */
+@keyframes bounce-ig{
+  0%,100%{transform:translateY(0)}
+  45%{transform:translateY(-7px)}
+  65%{transform:translateY(-4px)}
+}
+.ig-float{animation:bounce-ig 2.6s ease-in-out 2s infinite}
+.ig-float:hover{animation:none;transform:scale(1.12)!important}
+
+/* ── EVENT TOP BAR (slightly taller) ── */
+.event-top{height:4px}
+
+/* ── COLOR REFINEMENTS ── */
+:root{
+  --border:#e0d9cc;
+  --shadow:rgba(26,26,46,.07);
+}
+[data-theme="dark"]{
+  --border:#30354e;
+  --shadow:rgba(0,0,0,.35);
+}
+/* Card hover — accent glow */
+.policy-card:hover{
+  box-shadow:0 8px 32px rgba(201,168,76,.12),0 2px 8px var(--shadow);
+}
+/* Stats bar subtle gold line */
+.stats-bar{border-bottom:2px solid rgba(201,168,76,.18)}
+/* Hero stronger gradient */
+.hero::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:60px;
+  background:linear-gradient(to bottom,transparent,rgba(0,0,0,.18));
+  pointer-events:none;
 }
