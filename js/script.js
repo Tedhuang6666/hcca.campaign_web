@@ -78,11 +78,11 @@ const EVENTS = [
     id:'film', name:'聯合電影節', color:'#5a8fd4', category:'跨校',
     desc:'考試期間辦理跨校電影放映活動，提供學生喘息、紓壓的空間。',
     ranges:[
-      {sy:2027,sm:3,sd:27,ey:2027,em:4,ed:6,  label:'預售'},
+      {sy:2027,sm:3,sd:27,ey:2027,em:4,ed:6,  label:'門票預售'},
       {sy:2027,sm:4,sd:11,ey:2027,em:4,ed:17, label:'活動舉行'},
     ],
     timeline:[
-      {date:'4/27 ～ 5/6',label:'預售'},
+      {date:'4/27 ～ 5/6',label:'門票預售'},
       {date:'5/11 ～ 5/17',label:'活動舉行（依考程調整）'},
     ]
   },
