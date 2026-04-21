@@ -19,11 +19,11 @@ const EVENTS = [
     desc:'由學生投稿商品並經投票選出年度代表性周邊，打造竹中限定商品文化。',
     ranges:[
       {sy:2026,sm:9,sd:30,ey:2026,em:10,ed:20, label:'商品預購'},
-      {sy:2026,sm:11,sd:5,ey:2026,em:11,ed:5,  label:'商品發放'},
+      {sy:2026,sm:11,sd:4,ey:2026,em:11,ed:4,  label:'商品發放'},
     ],
     timeline:[
       {date:'10/30 ～ 11/20',label:'商品預購'},
-      {date:'12/5',label:'商品發放'},
+      {date:'12/4',label:'商品發放'},
     ]
   },
   {
@@ -58,21 +58,21 @@ const EVENTS = [
     ranges:[
       {sy:2027,sm:1,sd:1, ey:2027,em:2,ed:6,  label:'報名'},
       {sy:2027,sm:2,sd:12,ey:2027,em:2,ed:13, label:'初賽'},
-      {sy:2027,sm:3,sd:26,ey:2027,em:3,ed:26, label:'複賽'},
+      {sy:2027,sm:3,sd:24,ey:2027,em:3,ed:24, label:'複賽'},
     ],
     timeline:[
       {date:'2/1 ～ 3/6',label:'報名'},
       {date:'3/12 ～ 3/13',label:'初賽'},
-      {date:'4/26',label:'複賽'},
+      {date:'4/24',label:'複賽'},
     ]
   },
   {
     id:'bazaar', name:'愛心園遊會', color:'#e8a838', category:'校內',
     desc:'結合社福團體與社區資源，推動公益參與，共創溫暖校園。',
     ranges:[
-      {sy:2027,sm:2,sd:14,ey:2027,em:2,ed:14, label:'活動舉行'},
+      {sy:2027,sm:2,sd:13,ey:2027,em:2,ed:13, label:'活動舉行'},
     ],
-    timeline:[{date:'3/14',label:'活動舉行'}]
+    timeline:[{date:'3/13',label:'活動舉行'}]
   },
   {
     id:'film', name:'聯合電影節', color:'#5a8fd4', category:'跨校',
