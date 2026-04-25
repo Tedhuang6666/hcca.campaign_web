@@ -159,8 +159,12 @@ a{color:inherit;text-decoration:none}
 .week-empty{height:6px}
 
 /* Legend */
-.cal-legend{display:flex;flex-wrap:wrap;gap:8px 18px;
+.cal-legend{display:flex;flex-wrap:wrap;gap:10px 24px;
   padding:13px 16px;border-top:1px solid var(--border)}
+.leg-group{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.leg-cat{font-size:10px;font-weight:700;letter-spacing:.08em;
+  color:var(--gold);padding:2px 7px;border-radius:10px;
+  background:var(--gold-light);white-space:nowrap}
 .leg-item{display:flex;align-items:center;gap:6px;
   font-size:11px;color:var(--muted);cursor:pointer;transition:color .18s}
 .leg-item:hover{color:var(--ink)}

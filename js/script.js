@@ -19,11 +19,11 @@ const EVENTS = [
     desc:'由學生投稿商品並經投票選出年度代表性周邊，打造竹中限定商品文化。',
     ranges:[
       {sy:2026,sm:9,sd:30,ey:2026,em:10,ed:20, label:'商品預購'},
-      {sy:2026,sm:11,sd:5,ey:2026,em:11,ed:5,  label:'商品發放'},
+      {sy:2026,sm:11,sd:4,ey:2026,em:11,ed:4,  label:'商品發放'},
     ],
     timeline:[
       {date:'10/30 ～ 11/20',label:'商品預購'},
-      {date:'12/5',label:'商品發放'},
+      {date:'12/4',label:'商品發放'},
     ]
   },
   {
@@ -58,32 +58,52 @@ const EVENTS = [
     ranges:[
       {sy:2027,sm:1,sd:1, ey:2027,em:2,ed:6,  label:'報名'},
       {sy:2027,sm:2,sd:12,ey:2027,em:2,ed:13, label:'初賽'},
-      {sy:2027,sm:3,sd:26,ey:2027,em:3,ed:26, label:'複賽'},
+      {sy:2027,sm:3,sd:24,ey:2027,em:3,ed:24, label:'複賽'},
     ],
     timeline:[
       {date:'2/1 ～ 3/6',label:'報名'},
       {date:'3/12 ～ 3/13',label:'初賽'},
-      {date:'4/26',label:'複賽'},
+      {date:'4/24',label:'複賽'},
     ]
   },
   {
     id:'bazaar', name:'愛心園遊會', color:'#e8a838', category:'校內',
     desc:'結合社福團體與社區資源，推動公益參與，共創溫暖校園。',
     ranges:[
-      {sy:2027,sm:2,sd:14,ey:2027,em:2,ed:14, label:'活動舉行'},
+      {sy:2027,sm:2,sd:13,ey:2027,em:2,ed:13, label:'活動舉行'},
     ],
-    timeline:[{date:'3/14',label:'活動舉行'}]
+    timeline:[{date:'3/13',label:'活動舉行'}]
   },
   {
     id:'film', name:'聯合電影節', color:'#5a8fd4', category:'跨校',
     desc:'考試期間辦理跨校電影放映活動，提供學生喘息、紓壓的空間。',
     ranges:[
-      {sy:2027,sm:3,sd:27,ey:2027,em:4,ed:6,  label:'預售'},
+      {sy:2027,sm:3,sd:27,ey:2027,em:4,ed:6,  label:'門票預售'},
       {sy:2027,sm:4,sd:11,ey:2027,em:4,ed:17, label:'活動舉行'},
     ],
     timeline:[
-      {date:'4/27 ～ 5/6',label:'預售'},
+      {date:'4/27 ～ 5/6',label:'門票預售'},
       {date:'5/11 ～ 5/17',label:'活動舉行（依考程調整）'},
+    ]
+  },
+  {
+    id:'halloween', name:'萬聖節變裝大賽', color:'#e05c2a', category:'校內',
+    desc:'打破校園嚴謹氛圍，透過創意變裝展現竹中人的幽默感與藝術長才。開放學生於校內進行不違反校規之創意變裝，角逐年度最佳造型獎。',
+    ranges:[
+      {sy:2026,sm:9,sd:30,ey:2026,em:9,ed:30, label:'活動舉行'},
+    ],
+    timeline:[
+      {date:'10/30',label:'活動舉行'},
+    ]
+  },
+  {
+    id:'easter', name:'復活節彩蛋尋找', color:'#4caf7d', category:'校內',
+    desc:'結合校園地景與解謎機制，讓學生在課餘時間探索校園放鬆身心。於辛園、操場、圖書館前等處隱藏實體或數位彩蛋，尋獲即可兌換驚喜獎勵。',
+    ranges:[
+      {sy:2027,sm:2,sd:28,ey:2027,em:2,ed:28, label:'活動舉行'},
+    ],
+    timeline:[
+      {date:'3/28',label:'活動舉行'},
     ]
   },
 ];
@@ -275,6 +295,9 @@ function renderGrid(){
   }
 }
 
+const WD=['日','一','二','三','四','五','六'];
+function fmtDate(d){return`${d.getMonth()+1}/${d.getDate()}（${WD[d.getDay()]}）`;}
+
 function renderAgenda(){
   const el=document.getElementById('calList');
   el.innerHTML='';
@@ -294,8 +317,7 @@ function renderAgenda(){
   const wrap=document.createElement('div');
   wrap.innerHTML=`<div class="ag-month-title">${curY}年 ${MN[curM]}</div>`;
   rows.forEach(({ev,rs,re,label})=>{
-    const f=d=>`${d.getMonth()+1}/${d.getDate()}`;
-    const ds=rs.getTime()===re.getTime()?f(rs):`${f(rs)} ～ ${f(re)}`;
+    const ds=rs.getTime()===re.getTime()?fmtDate(rs):`${fmtDate(rs)} ～ ${fmtDate(re)}`;
     const item=document.createElement('div');
     item.className='ag-item';
     item.innerHTML=`<div class="ag-dot" style="background:${ev.color}"></div>
@@ -312,12 +334,28 @@ function renderAgenda(){
 
 function renderLegend(){
   const el=document.getElementById('calLegend');
+  const catOrder=['行政','校商','跨校','校內'];
+  const grouped={};
   EVENTS.forEach(ev=>{
-    const item=document.createElement('div');
-    item.className='leg-item';
-    item.innerHTML=`<div class="leg-dot" style="background:${ev.color}"></div>${ev.name}`;
-    item.addEventListener('click',()=>openModal(ev));
-    el.appendChild(item);
+    if(!grouped[ev.category]) grouped[ev.category]=[];
+    grouped[ev.category].push(ev);
+  });
+  catOrder.forEach(cat=>{
+    if(!grouped[cat]) return;
+    const group=document.createElement('div');
+    group.className='leg-group';
+    const label=document.createElement('div');
+    label.className='leg-cat';
+    label.textContent=cat;
+    group.appendChild(label);
+    grouped[cat].forEach(ev=>{
+      const item=document.createElement('div');
+      item.className='leg-item';
+      item.innerHTML=`<div class="leg-dot" style="background:${ev.color}"></div>${ev.name}`;
+      item.addEventListener('click',()=>openModal(ev));
+      group.appendChild(item);
+    });
+    el.appendChild(group);
   });
 }
 
@@ -427,14 +465,17 @@ document.querySelectorAll('.hero-btns a').forEach(a=>{
 });
 
 /* ── DARK MODE ── */
+const SVG_MOON=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>`;
+const SVG_SUN=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
 const html=document.documentElement, dBtn=document.getElementById('darkBtn');
-dBtn.onclick=()=>{
-  const dark=html.dataset.theme==='dark';
-  html.dataset.theme=dark?'light':'dark';
-  dBtn.textContent=dark?'🌙':'☀️';
-  localStorage.setItem('theme',html.dataset.theme);
-};
-if(localStorage.getItem('theme')==='dark'){html.dataset.theme='dark';dBtn.textContent='☀️';}
+function applyTheme(dark){
+  html.dataset.theme=dark?'dark':'light';
+  dBtn.innerHTML=dark?SVG_SUN:SVG_MOON;
+  dBtn.setAttribute('aria-label',dark?'切換為淺色模式':'切換為深色模式');
+  localStorage.setItem('theme',dark?'dark':'light');
+}
+dBtn.onclick=()=>applyTheme(html.dataset.theme!=='dark');
+applyTheme(localStorage.getItem('theme')==='dark');
 
 /* ── BACK TO TOP ── */
 const topBtn=document.getElementById('topBtn');
